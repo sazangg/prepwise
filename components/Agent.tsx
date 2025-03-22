@@ -13,7 +13,7 @@ export default function Agent({ userName }: AgentProps) {
   const isSpeaking = true;
   const messages = [
     "What's your name?",
-    "My name is John Doe, nice to meet you",
+    "My name is John Doe, nice to meet you!",
   ];
   const lastMessage = messages[messages.length - 1];
 

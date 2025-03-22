@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBxq57WMhJioBpeoNzTyykGGpLHJAp0uAA",
+  apiKey: process.env.FIREBASE_CLIENT_API_KEY,
   authDomain: "prepwise-e7be8.firebaseapp.com",
   projectId: "prepwise-e7be8",
   storageBucket: "prepwise-e7be8.firebasestorage.app",

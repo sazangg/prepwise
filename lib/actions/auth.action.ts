@@ -116,3 +116,14 @@ export async function isAuthenticated() {
 
   return !!user;
 }
+
+export async function logout() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete({
+    name: "session",
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+}

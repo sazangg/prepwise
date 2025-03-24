@@ -1,7 +1,7 @@
 "use client";
 
 import { interviewer } from "@/constants";
-import { createFeedback } from "@/lib/actions/general.action";
+import { createOrUpdateFeedback } from "@/lib/actions/general.action";
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import Image from "next/image";
@@ -62,9 +62,7 @@ export default function Agent({
   }, []);
 
   const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-    console.log("Generate feedback here.");
-
-    const { success, feedbackId: id } = await createFeedback({
+    const { success, feedbackId: id } = await createOrUpdateFeedback({
       interviewId: interviewId!,
       userId: userId!,
       transcript: messages,

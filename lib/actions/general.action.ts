@@ -47,7 +47,7 @@ export async function getInterviewById(id: string): Promise<Interview | null> {
   return interview.data() as Interview | null;
 }
 
-export async function createFeedback(params: CreateFeedbackParams) {
+export async function createOrUpdateFeedback(params: CreateFeedbackParams) {
   const { interviewId, userId, transcript } = params;
 
   try {
@@ -85,9 +85,34 @@ export async function createFeedback(params: CreateFeedbackParams) {
         "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
     });
 
-    const feedback = await db.collection("feedback").add({
-      interviewId,
-      userId,
+    const existingFeedback = await db
+      .collection("feedback")
+      .where("interviewId", "==", interviewId)
+      .where("userId", "==", userId)
+      .orderBy("createdAt", "desc")
+      .limit(1)
+      .get();
+
+    if (existingFeedback.empty) {
+      const feedback = await db.collection("feedback").add({
+        interviewId,
+        userId,
+        totalScore,
+        categoryScores,
+        strengths,
+        areasForImprovement,
+        finalAssessment,
+        createdAt: new Date().toISOString(),
+      });
+
+      return {
+        success: true,
+        feedbackId: feedback.id,
+      };
+    }
+
+    const existingFeedbackDoc = existingFeedback.docs[0];
+    await db.collection("feedback").doc(existingFeedbackDoc.id).update({
       totalScore,
       categoryScores,
       strengths,
@@ -98,7 +123,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
 
     return {
       success: true,
-      feedbackId: feedback.id,
+      feedbackId: existingFeedbackDoc.id,
     };
   } catch (error) {
     console.error("Error saving feedback", error);

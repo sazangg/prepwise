@@ -1,5 +1,7 @@
 "use server";
 
+import "server-only";
+
 import { auth, db } from "@/firebase/admin";
 import { cookies } from "next/headers";
 

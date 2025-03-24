@@ -34,10 +34,10 @@ export default async function Page({ params }: RouteParams) {
         </p>
       </div>
       <Agent
-        userName={user?.name!}
+        userName={user?.name || ""}
         userId={user?.id}
         type="interview"
-        interviewId={interview.id}
+        interviewId={id}
         questions={interview.questions}
       />
     </>
